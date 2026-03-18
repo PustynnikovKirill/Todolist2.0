@@ -1,20 +1,29 @@
-import {FilterValues, Task} from './App'
+import type {FilterValues, Task} from './App'
 import {Button} from './Button'
+import {useRef} from "react";
 
 type Props = {
     title: string
     tasks: Task[]
-    deleteTask: (taskId: number) => void
-    changeFilter:(filter:FilterValues)=>void
+    deleteTask: (taskId: string) => void
+    changeFilter: (filter: FilterValues) => void
+    createTask: (newTitle:string) => void
 }
 
-export const TodolistItem = ({title, tasks, deleteTask,changeFilter}: Props) => {
+export const TodolistItem = ({title, tasks, deleteTask, changeFilter,createTask}: Props) => {
+    const inputRef = useRef<HTMLInputElement>(null)
+
     return (
         <div>
             <h3>{title}</h3>
             <div>
-                <input/>
-                <Button title={'+'}/>
+                <input ref={inputRef}/>
+                <Button title={'+'} onClick={()=>{
+                    if (inputRef.current){
+                        createTask(inputRef.current.value)
+                        inputRef.current.value=''
+                    }
+                }}/>
             </div>
             {tasks.length === 0 ? (
                 <p>Тасок нет</p>
