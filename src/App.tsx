@@ -13,7 +13,7 @@ export type FilterValues = 'all' | 'active' | 'completed'
 
 export const App = () => {
     const [filter, setFilter] = useState<FilterValues>('all')
-    debugger
+
     const [tasks, setTasks] = useState<Task[]>([
         {id: v1(), title: 'HTML&CSS', isDone: true},
         {id: v1(), title: 'JS', isDone: true},
@@ -23,7 +23,6 @@ export const App = () => {
     const createTask = (newTitle:string) => {
         const newTask = {id: v1(), title: newTitle, isDone: false}
         setTasks([newTask,...tasks,])
-
     }
 
     const deleteTask = (taskId: string) => {
