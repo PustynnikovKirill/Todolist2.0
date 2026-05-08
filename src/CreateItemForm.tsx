@@ -2,9 +2,10 @@ import {Button} from "./Button.tsx";
 import {ChangeEvent, KeyboardEvent, useState} from "react";
 
 export type CreateItemFormType = {
-    createItem: (title:string) => void;
+    onCreateItem: (title:string) => void;
+
 }
-export const CreateItemForm = ({createItem}:CreateItemFormType) => {
+export const CreateItemForm = ({onCreateItem}:CreateItemFormType) => {
 
     const [itemTitle, setItemTitle] = useState('')
     const [error, setError] = useState<string | null>(null)
@@ -13,7 +14,7 @@ export const CreateItemForm = ({createItem}:CreateItemFormType) => {
     const createTaskHandler = () => {
         const trimmedTitle = itemTitle.trim()
         if (trimmedTitle !== '') {
-            createItem(trimmedTitle)
+            onCreateItem(trimmedTitle)
             setItemTitle('')
         } else {
             setError('Title is required')
