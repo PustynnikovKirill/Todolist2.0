@@ -1,45 +1,51 @@
-import {Button} from "./Button.tsx";
-import {ChangeEvent, KeyboardEvent, useState} from "react";
+import {type ChangeEvent, type KeyboardEvent, useState} from 'react'
+import AddBoxIcon from '@mui/icons-material/AddBox'
+import TextField from '@mui/material/TextField'
+import IconButton from "@mui/material/IconButton";
 
-export type CreateItemFormType = {
-    onCreateItem: (title:string) => void;
-
+type Props = {
+  onCreateItem: (title: string) => void
 }
-export const CreateItemForm = ({onCreateItem}:CreateItemFormType) => {
 
-    const [itemTitle, setItemTitle] = useState('')
-    const [error, setError] = useState<string | null>(null)
+export const CreateItemForm = ({ onCreateItem }: Props) => {
+  const [title, setTitle] = useState('')
+  const [error, setError] = useState<string | null>(null)
 
-
-    const createTaskHandler = () => {
-        const trimmedTitle = itemTitle.trim()
-        if (trimmedTitle !== '') {
-            onCreateItem(trimmedTitle)
-            setItemTitle('')
-        } else {
-            setError('Title is required')
-        }
+  const createItemHandler = () => {
+    const trimmedTitle = title.trim()
+    if (trimmedTitle !== '') {
+      onCreateItem(trimmedTitle)
+      setTitle('')
+    } else {
+      setError('Title is required')
     }
+  }
 
-    const changeItemTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        setItemTitle(event.currentTarget.value)
-        setError(null)
+  const changeTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    setTitle(event.currentTarget.value)
+    setError(null)
+  }
+
+  const createItemOnEnterHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      createItemHandler()
     }
+  }
 
-    const createItemOnEnterHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter') {
-            createTaskHandler()
-        }
-    }
+  return (
+      <div>
 
-    return (
-        <div>
-            <input className={error ? 'error' : ''}
-                   value={itemTitle}
-                   onChange={changeItemTitleHandler}
+        <TextField label={'Enter a title'}
+                   variant={'outlined'}
+                   value={title}
+                   size={'small'}
+                   error={!!error}
+                   helperText={error}
+                   onChange={changeTitleHandler}
                    onKeyDown={createItemOnEnterHandler}/>
-            <Button title={'+'} onClick={createTaskHandler}/>
-            {error && <div className={'error-message'}>{error}</div>}
-        </div>
-    )
+        <IconButton onClick={createItemHandler} color={'primary'}>
+          <AddBoxIcon />
+        </IconButton>
+      </div>
+  )
 }
